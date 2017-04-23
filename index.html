@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="footer, basic, centered, links"/>
+<title>Claw Machine</title>
+<script src="jquery.min.js"></script>
+<link rel="stylesheet" href="bootstrap.css">
+<script src="bootstrap.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+</head>
+<body>
+<div class="col-lg-3 text-center">
+  <h1 class="left-panel" id="name_heading">Player name</h1>
+  <a id="playBtn" onclick="newtimer()" class="myButton left-panel" style="margin-top:100px;">Play</a>
+  <div>
+    <a class="myButton left-panel">Buy Coins</a>
+  </div>
+  <div>
+    <a class="myButton left-panel">Back</a>
+    <a onclick="camera_change()" class="myButton left-panel">Switch</a>
+  </div>
+  <div class="specbox">
+    <div class="info">
+      <h4 class="text-center">Guide</h4>
+      <p>
+        Arrow keys to use the joystick <br>
+         "Spacebar" to grab (Once grab, turn will be over)
+      </p>
+      <a href="spectate.html" class="btn">spectate</a>
+    </div>
+  </div>
+</div>
+<div class="col-lg-6 text-center">
+  <div class="middle">
+    <h1 class="timer text-center">00:<span id="demo">00</span></h1>
+  </div>
+  <img id="cam" height="560px" width="100%">
+  <div class="bottom-down">
+    <div style="float:left;padding-left:40px;padding-top:5px;">
+      <section id="container">
+      <section id="base">
+      <section class="top left"></section>
+      <section class="top right"></section>
+      <section class="bottom left"></section>
+      <section class="bottom right"></section>
+      </section>
+      <section id="joystick">
+      <section class="inner">
+      <section id="roller">
+      <section id="stick">
+      <section class="inner"></section>
+      </section>
+      </section>
+      </section>
+      </section>
+      </section>
+    </div>
+    <a id="mybtn" class="myButton controller" style="float:left;">Grab</a>
+    <div class="right-panel">
+      <h1 style="float:left;">Coins </h1>
+      <div>
+        <h1 id="coins" style="float:left;margin-left:10px;">0</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-3" style="height:500px;">
+  <div class="chat">
+    <div class="chat-title">
+      <h1 id="chatname_heading">Player</h1>
+      <figure class="avatar">
+      <img src="ninja.png"/></figure>
+    </div>
+    <div class="messages">
+      <div class="messages-content">
+      </div>
+    </div>
+    <div class="message-box">
+      <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+      <button type="submit" class="message-submit">Send</button>
+    </div>
+  </div>
+</div>
+<div id="popup1" class="overlay">
+  <div class="popup">
+    <h2>Claw Machine</h2>
+    <a class="close" href="#">&times;</a>
+    <div class="content">
+       You have more coins remaining, want to play again ?
+    </div>
+    <a href="#" class="btn btn-primary">Yes</a>
+    <a id="no-btn" class="btn btn-warning" href="spectate.html">No</a>
+  </div>
+</div>
+<div id="prize" class="overlay">
+  <div class="popup">
+    <h2>Claw Machine</h2>
+    <a class="close" href="#">&times;</a>
+    <img src="balloons.gif">
+    <div class="content">
+      <br>
+       You just won a prize !
+    </div>
+    <h3>Share</h3>
+    <div id="share-buttons">
+      <a href="https://www.facebook.com/sharer.php?u=http://google.com&title=Just%20Won%20a%20prize" target="_blank">
+      <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook"/>
+      </a>
+      <a href="https://plus.google.com/share?url=https://simplesharebuttons.com" target="_blank">
+      <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google"/>
+      </a>
+      <a href="https://twitter.com/share?url=https://simplesharebuttons.com&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank">
+      <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter"/>
+      </a>
+    </div>
+    <a href="#" class="btn btn-primary">No thanks</a>
+  </div>
+</div>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
+<script src="chat_index.js"></script>
+<script>
+    //
+        var ip="";
+        $.ajax({
+  url: "https://api.ipify.org/?format=json",
+  dataType: "text",
+  success: function(data) {
+    var json = $.parseJSON(data);
+      ip=json.ip;
+      if(ip=="104.32.141.165"){
+                        //  document.getElementById("cam").src="http://192.168.0.12:8080/?action=stream";   
+                          start_spec();      
+                              }
+      else{   start_spec();
+          document.getElementById("cam").src="http://104.32.141.165:8080/?action=stream";}
+  }});
+         document.getElementById("cam").src="http://104.32.141.165:8080/?action=stream"; 
+         var ws_main;
+         var temp_ip;
+    function start_spec()
+        {
+             $(function(){
+                  if(ip=="104.32.141.165"){
+        // temp_ip="192.168.0.12";
+                      }
+      else{temp_ip="104.32.141.165"}
+                 console.log("ip is "+ip);
+                  ws_main= new WebSocket("ws://104.32.141.165:3000/main");
+        ws_main.onmessage = function(evt) {
+            var player_names=evt.data.split('-');
+            if(player_names[0]=='chatmessage')
+                {
+                    OnMessage(player_names[1],player_names[2]);
+                }
+        };
+        ws_main.onclose = function(evt) { 
+        };
+        ws_main.onopen = function(evt) { 
+        };
+             });
+        }
+    </script>
+<script>
+    if(typeof(Storage)!=="undefined"  && localStorage.name && localStorage.coins)
+  {
+      document.getElementById("name_heading").innerHTML=localStorage.name;
+      document.getElementById("coins").innerHTML=localStorage.coins;
+  }
+else
+  {
+//window.open("spectate.html","_self");
+  }
+    </script>
+<script>
+      var ws;
+       var count_camera =0;   
+    var sources=[
+              "http://104.32.141.165:8080/?action=stream",
+              "http://104.32.141.165:8082/?action=stream"
+          ];
+   var btn_done=false;
+    (function () {
+    var btn="";
+         var KEYS = [];
+    KEYS[32] = 'pressed';
+    KEYS[37] = 'left';
+    KEYS[38] = 'up';
+    KEYS[39] = 'right';
+    KEYS[40] = 'down';
+    KEYS[32] = 'grab';//65 for button a
+    KEYS[83] = 'reset';
+        var $elem = $('#stick, #base');
+        var grab_btn = document.getElementById('mybtn');
+        $(document).on('keydown', function(e) {
+        if(!btn_done)
+        {
+            if(ws && KEYS[e.which]){  ws.send(KEYS[e.which]);}
+            btn_done=true;
+        }
+        btn=KEYS[e.which];
+       console.log(btn);
+            if(btn=="grab"){
+                clearInterval(timer_div);
+                timer_div=undefined;
+            grab_btn.classList.add ("grab");
+              setTimeout(function(){
+                    won_prize();
+                },35000);
+            }
+            switch(e.keyCode) {
+                case 38 :
+                    $elem.addClass('top'); 
+                    break;
+                case 37 : 
+                    $elem.addClass('left'); 
+                    break;
+                case 39 : 
+                    $elem.addClass('right'); 
+                    break;
+                case 40 : 
+                    $elem.addClass('bottom'); 
+                    break;
+            }
+        });
+        $(document).on('keyup', function(e) {
+             btn_done=false;
+             if(btn!="grab" && KEYS[e.which]){
+     if(ws){ ws.send("stop");}
+        console.log("stop");}
+            if(btn=="grab"){
+            grab_btn.classList.remove ("grab");
+            }
+            switch(e.keyCode) {
+                case 38 : 
+                    $elem.removeClass('top'); 
+                    break;
+                case 37 : 
+                    $elem.removeClass('left');
+                    break;
+                case 39 : 
+                    $elem.removeClass('right'); 
+                    break;
+                case 40 : 
+                    $elem.removeClass('bottom');
+                    break;
+            }
+        });
+      })();
+     function connect_ws(){
+     $(function(){
+      if(!ws){
+     //ws = new WebSocket("ws://192.168.43.4:3030/ws");
+       if(ip=="104.32.141.165"){
+        // ip="192.168.0.12";
+                      }
+      else{ip="104.32.141.165"}
+     ws = new WebSocket("ws://104.32.141.165:3000");
+        ws.onmessage = function(evt) {
+            console.log("Received "+evt.data);
+          if(evt.data=="full"){ws.close();ws=undefined;window.open("/","_self");}
+            if(evt.data=="prize"){
+                console.log("inside prize");
+                won_prize(); $.playSound(sounds_wow[0]);
+window.open("#prize","_self");}
+      //    logger(evt.data);
+        };
+        ws.onclose = function(evt) { 
+        };
+        ws.onopen = function(evt) { 
+        };
+      }
+      });
+        }//ending
+    </script>
+<script>
+// Set the date we're counting down to
+var timer_div;
+function newtimer(){
+  if(localStorage.coins){
+    connect_ws();
+    var count=30;
+    if(!timer_div){
+       document.getElementById("playBtn").disabled = true;
+       timer_div =   setInterval(function() {
+count--;
+ if(count<10){
+  document.getElementById("demo").innerHTML = "0" + count;
+  }
+         else{ document.getElementById("demo").innerHTML = count;}
+  //       if(count==10){document.getElementById("seconds_div").style.backgroundColor = "red";}
+if(count==0){ 
+   //   document.getElementById("seconds_div").style.backgroundColor = "rgb(244, 231, 85)";
+  clearInterval(timer_div);
+  timer_div=undefined;
+  //localStorage.coins
+  var coins=localStorage.coins;
+  if(coins>1)
+  {
+    if(ws.readyState === ws.OPEN)
+    {
+      ws.close();
+      ws=undefined;
+      console.log("coin deduct");
+      var coins=parseInt(localStorage.coins);
+      coins--;         
+      localStorage.setItem("coins", coins.toString());
+      document.getElementById("coins").innerHTML=localStorage.coins;   
+     window.open("#popup1","_self");
+     document.getElementById("playBtn").disabled = false;   
+    }
+     // coins--;
+      //localStorage.setItem("coins", coins.toString());
+     // window.open("#popup1","_self");
+  }
+   else
+   {
+  //  document.getElementById("coins").innerHTML="0"; 
+  //    localStorage.setItem("name", "");
+  //  localStorage.setItem("coins", "");}
+    if(ws.readyState === ws.OPEN)
+    {
+      ws.close();
+      ws=undefined;
+      console.log("coin deduct");
+      var coins=parseInt(localStorage.coins);
+      coins--;
+      if(coins<0){coins=0;}
+      localStorage.setItem("coins", coins.toString());
+      document.getElementById("coins").innerHTML=localStorage.coins;      
+      localStorage.setItem("name", "");
+      localStorage.setItem("coins", "");
+      document.getElementById("playBtn").disabled = false; 
+    }
+  }
+}
+}, 1000);
+    }
+    }
+    else{alert("buy coins");}
+}
+      function won_prize()
+      {
+            // document.getElementById("seconds_div").style.backgroundColor = "rgb(244, 231, 85)";
+          clearInterval(timer_div);
+    timer_div=undefined;
+    //localStorage.coins
+      var coins=parseInt(localStorage.coins);
+              if(coins>1)
+    {
+         if(ws.readyState === ws.OPEN){
+              ws.close();
+    ws=undefined;
+            console.log("coin deduct");
+             var coins=parseInt(localStorage.coins);
+               coins--;
+          document.getElementById("demo").innerHTML = "00";
+        localStorage.setItem("coins", coins.toString());
+        document.getElementById("coins").innerHTML=localStorage.coins;   
+           window.open("#popup1","_self");
+               document.getElementById("playBtn").disabled = false; 
+              }
+       // coins--;
+        //localStorage.setItem("coins", coins.toString());
+       // window.open("#popup1","_self");
+        }
+    else{
+      //  document.getElementById("coins").innerHTML="0"; 
+    //    localStorage.setItem("name", "");
+    //  localStorage.setItem("coins", "");}
+     if(ws.readyState === ws.OPEN){
+              ws.close();
+    ws=undefined;
+            console.log("coin deduct");
+             var coins=parseInt(localStorage.coins);
+               coins--;
+            if(coins<0){coins=0;}
+          document.getElementById("demo").innerHTML = "00";
+        localStorage.setItem("coins", coins.toString());
+        document.getElementById("coins").innerHTML=localStorage.coins;      
+                   localStorage.setItem("name", "");
+          localStorage.setItem("coins", "");
+           document.getElementById("playBtn").disabled = false; 
+     }
+              }
+      }
+    function camera_change()
+      {
+          if(count_camera==0){count_camera++;}
+          else{count_camera=0;}
+          document.getElementById("cam").src=sources[count_camera];
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <title>Claw machine</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+
+</head>
+  
+     
+<body>
+
+<div class="jumbotron text-center" style="padding:60px;">
+Name:<br>
+  <input type="text" name="firstname" id="myfirstname" value="">
+  <br>
+  Coins:<br>
+  <input type="text" name="lastname" id="mycoins" value="">
+  <br><br>
+   
+ <a onclick="myfunction()" style="font-size:30px;text-align:center;cursor:pointer;">Buy</a>
+   </div>
+
+
+    
+    
+    
+   
+
+
+</body>
+    <script>
+        function myfunction(){
+         
+            
+    if(typeof(Storage)!=="undefined")
+  {
+  localStorage.setItem("name", document.getElementById("myfirstname").value);
+       localStorage.setItem("coins", document.getElementById("mycoins").value);
+       window.open("/","_self");
+  }
+else
+  {
+ alert("not supported");
+  }
+        }
+    </script>
+</html>

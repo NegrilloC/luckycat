@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="footer, basic, centered, links" />
+
+  <title>Claw Machine</title>
+  
+ 
+
+  <script src="jquery.min.js"></script>
+	<link rel="stylesheet" href="bootstrap.css">
+	<script src="bootstrap.min.js"></script>
+  
+  
+
+      <link rel="stylesheet" href="style.css">
+ <link rel="stylesheet" href="chat.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+  
+</head>
+ 
+
+<body>
+ <div class="col-lg-3 text-center" style="background-color:rgba(150,234,233,150);height:500px;">
+     <h1 class="left-panel" id="name_heading">Spectate mode</h1>
+    <div>
+   <div  class="panel status panel-danger left-panel">
+                <div class="panel-heading">
+                    <h1 id="coins" class="panel-title text-center">0</h1>
+                </div>
+                <div class="panel-body text-center">                        
+                    <strong>Coins</strong>
+                </div>
+            </div>
+    </div>
+    <div>
+    <div class="panel status panel-danger left-panel">
+                <div class="panel-heading">
+                    <h1 id="demo" class="panel-title text-center">0</h1>
+                </div>
+                <div class="panel-body text-center">                        
+                    <strong>Seconds</strong>
+                </div>
+            </div>
+    </div>
+    <a  onclick="newtimer()" class="myButton left-panel">Play</a>
+    </div>
+    <div class="col-lg-7" style="background-color:rgba(150,234,233,150);height:500px;">
+    <img id="cam" height="500px" width="95%">
+    </div>
+    <div class="col-lg-2" style="background-color:rgba(150,234,233,150);height:500px;">
+ <div class="chat">
+  <div class="chat-title">
+    <h1 id="chatname_heading">Player</h1>
+ 
+    <figure class="avatar">
+      <img src="ninja.png" /></figure>
+  </div>
+  <div class="messages">
+    <div class="messages-content"></div>
+  </div>
+  <div class="message-box">
+    <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+    <button type="submit" class="message-submit">Send</button>
+  </div>
+
+</div>
+   
+   
+        
+    </div>
+    <div class="col-lg-3 text-center"> 
+         
+       <div class="specbox" >
+                
+                <div class="info">
+                    <h4 class="text-left">Waiting players</h4>
+                    <p id="spec_names">
+                      <figure class="avatar">
+      <img height="30" width="30" src="ninja.png" />Anas</figure>
+                 
+                <figure class="avatar">
+      <img height="30" width="30" src="ninja.png" />Anas</figure>
+                     
+                    </p>
+                    <a class="btn"></a>
+                </div>
+            </div>
+    </div>
+    
+    <div class="col-lg-9" style="padding-top:10px;">
+  
+        <section id="container" style="float:left;">
+            <section id="base">
+                <section class="top left"></section>
+                <section class="top right"></section>
+                <section class="bottom left"></section>
+                <section class="bottom right"></section>
+            </section>
+
+            <section id="joystick">
+                <section class="inner">
+                    <section id="roller">
+                        <section id="stick">
+                            <section class="inner"></section>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+<div>
+ <a id="mybtn" class="myButton controller">Grab</a>
+    <a  class="myButton controller">reset</a>
+    </div>
+    </div>
+    <div id="popup1" class="overlay">
+	<div class="popup">
+		<h2>Claw Machine</h2>
+		<a  class="close" href="#">&times;</a>
+		<div class="content">
+			Another player is playing, please try again later in few seconds :)
+		</div>
+      <a onclick="myfun()"  href="#">Ok</a>
+	</div>
+</div> 
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
+<script src="chat.js"></script>
+  
+
+</body>
+    <script>
+    //
+        var ip="";
+        $.ajax({
+  url: "https://api.ipify.org/?format=json",
+
+  dataType: "text",
+  success: function(data) {
+
+  
+    var json = $.parseJSON(data);
+      ip=json.ip;
+      if(ip=="104.32.141.165"){ip="192.168.0.12";
+                          document.getElementById("cam").src="http://"+ip+":8080/?action=stream";   
+                     console.log("camera connected to "+ip);          }
+      else{document.getElementById("cam").src="http://104.32.141.165:8080/?action=stream";console.log("camera connected to "+ip);  }
+     
+  }});
+          console.log(ip);
+    </script>
+  
+    <script>
+   var ws;
+        var watcher_name="";
+        function myfun(){
+        
+        }
+       
+    
+    if(typeof(Storage)!=="undefined"  && localStorage.name && localStorage.coins)
+  {
+ 
+     
+    //  document.getElementById("name_heading").innerHTML=localStorage.name;
+    //  document.getElementById("coins").innerHTML=localStorage.coins+" C";
+    
+     window.open("#popup1","_self");
+    watcher_name=localStorage.name;
+       document.getElementById("chatname_heading").innerHTML=localStorage.name;
+      connect_ws();
+  }
+else
+  {
+//disable buttons
+  }
+            function connect_ws(){
+     $(function(){
+     
+     
+        
+      if(!ws){
+    
+     //ws = new WebSocket("ws://192.168.43.4:3030/ws");
+      if(ip=="104.32.141.165")
+      {
+         ip="192.168.0.12";
+          
+      }
+      else{ip="104.32.141.165"}
+          console.log("connected to "+ip);
+       ws = new WebSocket("ws://"+ip+":3000/spectate");
+        ws.onmessage = function(evt) {
+       
+            //  alert(evt.data);
+            var player_names=evt.data.split('-');
+            if(player_names[0]!='chatmessage'){
+           document.getElementById("spec_names").innerHTML="";
+            for (var a=1;a<=player_names.length;a++){
+                if(player_names[a]){
+            document.getElementById("spec_names").innerHTML+=player_names[a]+"<br>";
+                }
+            }
+            }
+            else if(player_names[0]=='chatmessage')
+                {
+                    OnMessage(player_names[1],player_names[2]);
+                }
+        };
+        ws.onclose = function(evt) { 
+       
+     
+        };
+        ws.onopen = function(evt) { 
+        ws.send("name-"+watcher_name);
+        };
+      }
+         
+      });
+        }//ending
+      
+      
+    </script>
+
+</html>
