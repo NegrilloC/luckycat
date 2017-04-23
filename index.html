@@ -145,20 +145,20 @@ function start_spec() {
   });
 } </script> <script>
  //# if (typeof(Storage) !== "undefined" && localStorage.name && localStorage.coins && localStorage.userid) {
-    $.get('https://luckycat.website/gamesapi/coincheck.php?', {
-      userid: localStorage.userid
-    }, function(dataUserDetails) {
-      var a = jQuery.parseJSON(dataUserDetails);
-      if (a.data[0].userid == "0") {
-        //set data to null
-        window.location.href = "login.html";
-      } else {
-        localStorage.setItem("coins", a.data[0].coins);
-        document.getElementById("coins").innerHTML = localStorage.coins;
+//#    $.get('https://luckycat.website/gamesapi/coincheck.php?', {
+//#      userid: localStorage.userid
+//#    }, function(dataUserDetails) {
+//#      var a = jQuery.parseJSON(dataUserDetails);
+//#      if (a.data[0].userid == "0") {
+//#        //set data to null
+//#        window.location.href = "login.html";
+//#      } else {
+//#        localStorage.setItem("coins", a.data[0].coins);
+//#        document.getElementById("coins").innerHTML = localStorage.coins;
         start_spec();
-      }
-    });
-    document.getElementById("name_heading").innerHTML = localStorage.name;
+//#      }
+//#    });
+ //#   document.getElementById("name_heading").innerHTML = localStorage.name;
   //#} 
   //#else {
   //#  window.location.href = "spectate.html";
