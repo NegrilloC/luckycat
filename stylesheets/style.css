@@ -394,13 +394,9 @@ body #container #joystick .inner #stick .inner {
 }
 .controller
 {
-    cursor: none;
   margin-top: 50px; 
-    margin-left: 80px;
-background-color:#F04141;
-    color:#000000;
-   
-  
+  margin-left: 100px;
+  background-color:#F04141;
 }
 .grab{
     background-color: black;
